@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Jewelry | Éclat</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="bg-black text-white overflow-x-hidden">
+    <!-- 3D Background Animation -->
+    <div id="vanta-bg" class="fixed top-0 left-0 w-full h-full z-0"></div>
+    <!-- Cart Icon -->
+    <div class="cart-icon" onclick="toggleCart()">
+        <i data-feather="shopping-cart" class="text-white w-6 h-6"></i>
+        <span class="cart-count" id="cartCount">0</span>
+    </div>
+
+    <!-- Cart Notification -->
+    <div class="cart-notification" id="cartNotification">
+        <i data-feather="check-circle" class="text-green-500"></i>
+        <span>Item added to cart!</span>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar"
+        class="fixed top-0 right-0 h-full w-96 bg-black border-l border-gray-800 z-50 transform translate-x-full transition-transform duration-300">
+        <div class="p-6 h-full flex flex-col">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-serif">Your Cart</h2>
+                <button onclick="toggleCart()" class="text-white hover:text-gray-300">
+                    <i data-feather="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <div class="flex-grow overflow-y-auto mb-6" id="cartItems">
+                <!-- Cart items will be added here dynamically -->
+                <div class="text-gray-400 text-center py-12">Your cart is empty</div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-4">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-gray-400">Total:</span>
+                    <span class="text-xl font-bold" id="cartTotal">$0.00</span>
+                </div>
+                <button class="w-full bg-white text-black py-3 hover:bg-gray-200 transition duration-300 font-medium">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Navigation -->
+    <nav class="relative z-50 bg-black bg-opacity-80 backdrop-filter backdrop-blur-lg border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-2xl font-serif tracking-widest text-white">ÉCLAT</span>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#" class="text-white hover:text-gray-300 px-3 py-2 text-sm font-medium">Collections</a>
+                        <a href="#" class="text-white hover:text-gray-300 px-3 py-2 text-sm font-medium">Rings</a>
+                        <a href="#" class="text-white hover:text-gray-300 px-3 py-2 text-sm font-medium">Necklaces</a>
+                        <a href="#" class="text-white hover:text-gray-300 px-3 py-2 text-sm font-medium">Earrings</a>
+                        <a href="#" class="text-white hover:text-gray-300 px-3 py-2 text-sm font-medium">About</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-white hover:text-gray-300">
+                        <i data-feather="search"></i>
+                    </button>
+                    <button class="text-white hover:text-gray-300">
+                        <i data-feather="shopping-bag"></i>
+                    </button>
+                    <button class="md:hidden text-white hover:text-gray-300">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center z-10">
+        <div class="text-center px-4">
+            <h1 class="text-5xl md:text-7xl font-serif mb-6" data-aos="fade-down">Timeless Elegance</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto" data-aos="fade-down" data-aos-delay="100">
+                Crafted with precision, designed for eternity. Discover our exclusive collection of luxury jewelry.
+            </p>
+            <button
+                class="bg-transparent border border-white text-white px-8 py-3 hover:bg-white hover:text-black transition duration-300"
+                data-aos="fade-up" data-aos-delay="200">
+                Explore Collections
+            </button>
+        </div>
+        <div class="scroll-down">
+            <i data-feather="chevron-down" class="text-white w-8 h-8"></i>
+        </div>
+    </section>
+
+    <!-- Featured Collections -->
+    <section class="relative z-10 py-20 bg-black bg-opacity-90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-serif text-center mb-16" data-aos="fade-up">Our Signature Collections
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Collection 1 -->
+                <div class="relative overflow-hidden group" data-aos="fade-up" data-aos-delay="100">
+                    <div
+                        class="diamond-shine h-96 bg-gradient-to-br from-gray-900 to-black rounded-lg flex items-center justify-center">
+                        <img src="https://evarajewelry.com/cdn/shop/files/A_454d4bca-f790-4d4d-9678-7807661f6450_700x.png?v=1718528778"
+                            alt="Diamond Collection"
+                            class="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition duration-500">
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black to-transparent">
+                        <h3 class="text-2xl font-serif mb-2">Celestial Diamonds</h3>
+                        <p class="text-gray-300">Radiant brilliance in every cut</p>
+                    </div>
+                </div>
+
+                <!-- Collection 2 -->
+                <div class="relative overflow-hidden group" data-aos="fade-up" data-aos-delay="200">
+                    <div
+                        class="diamond-shine h-96 bg-gradient-to-br from-gray-900 to-black rounded-lg flex items-center justify-center">
+                        <img src="https://i.pinimg.com/1200x/ce/56/47/ce56471fa3c6998209f26d5c5432cc22.jpg"
+                            alt="Gold Collection"
+                            class="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition duration-500">
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black to-transparent">
+                        <h3 class="text-2xl font-serif mb-2">Golden Heritage</h3>
+                        <p class="text-gray-300">Timeless luxury in pure gold</p>
+                    </div>
+                </div>
+
+                <!-- Collection 3 -->
+                <div class="relative overflow-hidden group" data-aos="fade-up" data-aos-delay="300">
+                    <div
+                        class="diamond-shine h-96 bg-gradient-to-br from-gray-900 to-black rounded-lg flex items-center justify-center">
+                        <img src="https://i.pinimg.com/1200x/2e/e3/58/2ee3589776800d7cdb94c49d37fb495c.jpg"
+                            alt="Pearl Collection"
+                            class="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition duration-500">
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black to-transparent">
+                        <h3 class="text-2xl font-serif mb-2">Pearl Essence</h3>
+                        <p class="text-gray-300">Ocean's treasure in elegant designs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D Product Showcase -->
+    <section class="relative z-10 py-20 bg-black bg-opacity-80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0" data-aos="fade-right">
+                    <h2 class="text-3xl md:text-4xl font-serif mb-6">The Éclat Solitaire</h2>
+                    <p class="text-gray-300 mb-6">
+                        Our signature piece features a 3.5 carat D-color flawless diamond set in platinum.
+                        Each facet is precision-cut to maximize brilliance and fire.
+                    </p>
+                    <p class="text-gray-300 mb-8">
+                        Available in custom settings with diamonds ranging from 1 to 5 carats.
+                        Handcrafted by our master jewelers in Paris.
+                    </p>
+                    <button
+                        class="bg-transparent border border-white text-white px-8 py-3 hover:bg-white hover:text-black transition duration-300">
+                        Customize Yours
+                    </button>
+                </div>
+                <div class="md:w-1/2" data-aos="fade-left">
+                    <div
+                        class="relative h-96 w-full bg-gradient-to-br from-gray-900 to-black rounded-lg overflow-hidden">
+                        <!-- This would be replaced with an actual 3D model viewer in production -->
+                        <img src="https://customjewelry.blob.core.windows.net/large/116450.jpg" alt="3D Diamond Ring"
+                            class="w-full h-full object-contain">
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- Craftsmanship -->
+    <section class="relative z-10 py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0 order-2 md:order-1" data-aos="fade-left">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative h-64 bg-gradient-to-br from-gray-900 to-black rounded-lg overflow-hidden">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG3uuY-HZ0Hs0ce3-QiTi2cdd3yggqy1YNHw&s"
+                                alt=" Jeweler at work" class="w-full h-full object-cover opacity-80">
+                        </div>
+                        <div class="relative h-64 bg-gradient-to-br from-gray-900 to-black rounded-lg overflow-hidden">
+                            <img src="data:image/jpeg;base64,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"
+                                alt="Diamond cutting" class="w-full h-full object-cover opacity-80">
+                        </div>
+                        <div class="relative h-64 bg-gradient-to-br from-gray-900 to-black rounded-lg overflow-hidden">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTOzpKrB_7yUDFCbC-Ke_FjK6jP3lqqyTZug&s"
+                                alt="Ring polishing" class="w-full h-full object-cover opacity-80">
+                        </div>
+                        <div class="relative h-64 bg-gradient-to-br from-gray-900 to-black rounded-lg overflow-hidden">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKIrT2UJj7bxmLMFILy_dI3U5IRxmPE8UWz6sEfjL1l717xVyYD26YiYzjKclLQ5MvXsU&usqp=CAU"
+                                alt="Quality inspection" class="w-full h-full object-cover opacity-80">
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 md:pl-16 order-1 md:order-2" data-aos="fade-right">
+                    <h2 class="text-3xl md:text-4xl font-serif mb-6">Masterful Craftsmanship</h2>
+                    <p class="text-gray-300 mb-6">
+                        Each Éclat piece is the result of over 200 hours of meticulous craftsmanship by our
+                        team of master jewelers in our Paris atelier.
+                    </p>
+                    <p class="text-gray-300 mb-8">
+                        We combine centuries-old techniques with cutting-edge technology to create jewelry
+                        that stands the test of time while pushing the boundaries of design.
+                    </p>
+                    <button
+                        class="bg-transparent border border-white text-white px-8 py-3 hover:bg-white hover:text-black transition duration-300">
+                        Meet Our Artisans
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Featured Collections -->
+    <section class="py-20 px-4 bg-charcoal">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-cinzel text-3xl md:text-4xl font-bold text-gold mb-4">Featured Collections</h2>
+                <p class="text-platinum/80 max-w-2xl mx-auto">Curated selections of our most exquisite pieces, designed
+                    to captivate and inspire.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="product-card group relative overflow-hidden rounded-sm gold-border" data-aos="fade-up"
+                    data-aos-delay="100">
+                    <img src="https://i.pinimg.com/736x/7c/f1/f1/7cf1f1ebcc8d50aad47bb4a6660064c6.jpg"
+                        alt="Diamond Collection"
+                        class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="font-cinzel text-xl font-bold text-gold mb-2">Diamond Elegance</h3>
+                        <p class="text-platinum/90">Brilliant cuts that define luxury</p>
+                    </div>
+                </div>
+
+                <div class="product-card group relative overflow-hidden rounded-sm gold-border" data-aos="fade-up"
+                    data-aos-delay="200">
+                    <img src="https://sofapotato.in/cdn/shop/files/Untitled-1_0007_Untitled-1_0008__MG_5351.jpg?v=1719291390"
+                        alt="Gold Collection"
+                        class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="font-cinzel text-xl font-bold text-gold mb-2">vintage Antique</h3>
+                        <p class="text-platinum/90">Timeless pieces with modern flair</p>
+                    </div>
+                </div>
+
+                <div class="product-card group relative overflow-hidden rounded-sm gold-border" data-aos="fade-up"
+                    data-aos-delay="300">
+                    <img src="https://i.pinimg.com/1200x/13/57/f4/1357f47ee4a4aaee4a62cd7a4a0f17a0.jpg"
+                        alt="Platinum Collection"
+                        class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 class="font-cinzel text-xl font-bold text-gold mb-2">Platinum Pure</h3>
+                        <p class="text-platinum/90">Understated sophistication</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Exclusive Pieces -->
+    <section class="py-20 px-4 bg-dark">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="font-cinzel text-3xl md:text-4xl font-bold text-gold mb-4">Exclusive Pieces</h2>
+                <p class="text-platinum/80 max-w-2xl mx-auto">One-of-a-kind creations for the discerning collector.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Product 1 -->
+                <div class="product-card bg-charcoal rounded-sm gold-border p-6 gold-glow" data-aos="fade-up"
+                    data-aos-delay="100">
+                    <div class="relative h-64 mb-4">
+                        <img src="https://valleyrosestudio.com/cdn/shop/files/oleander-oval-lab-diamond-engagement-flower-ring-nature-inspired_valley-rose.png?v=1754411377"
+                            alt="Diamond Ring" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="font-cinzel text-lg font-bold text-gold mb-2">Celestial Diamond Ring</h3>
+                    <p class="text-platinum/80 text-sm mb-4">2.5 carat center stone with halo setting</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gold font-semibold">$12,500</span>
+                        <button class="text-gold hover:text-gold/80 add-to-cart" data-name="Celestial Diamond Ring"
+                            data-price="12500"
+                            data-image="https://valleyrosestudio.com/cdn/shop/files/oleander-oval-lab-diamond-engagement-flower-ring-nature-inspired_valley-rose.png?v=1754411377">
+                            <i data-feather="shopping-cart"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card bg-charcoal rounded-sm gold-border p-6 gold-glow" data-aos="fade-up"
+                    data-aos-delay="200">
+                    <div class="relative h-64 mb-4">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNlQjKYqQsecTkO5ROk0kQ_s-G8ySldS4eLb0jRie1EeTXwiP793_0djhC1TytVh5WCJ4&usqp=CAU"
+                            alt="Pearl Necklace" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="font-cinzel text-lg font-bold text-gold mb-2">Ocean Pearl Necklace</h3>
+                    <p class="text-platinum/80 text-sm mb-4">South Sea pearls with diamond clasp</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gold font-semibold">$8,200</span>
+                        <button class="text-gold hover:text-gold/80 add-to-cart" data-name="Ocean Pearl Necklace"
+                            data-price="8200"
+                            data-image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNlQjKYqQsecTkO5ROk0kQ_s-G8ySldS4eLb0jRie1EeTXwiP793_0djhC1TytVh5WCJ4&usqp=CAU">
+                            <i data-feather="shopping-cart"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card bg-charcoal rounded-sm gold-border p-6 gold-glow" data-aos="fade-up"
+                    data-aos-delay="300">
+                    <div class="relative h-64 mb-4">
+                        <img src="https://naturalgemsatelier.com/cdn/shop/products/il_fullxfull.2320472879_4atn_1600x.jpg?v=1614453232"
+                            alt="Emerald Bracelet" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="font-cinzel text-lg font-bold text-gold mb-2">Emerald Embrace Bracelet</h3>
+                    <p class="text-platinum/80 text-sm mb-4">Colombian emeralds set in 18k gold</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gold font-semibold">$15,800</span>
+                        <button class="text-gold hover:text-gold/80 add-to-cart" data-name="Emerald Embrace Bracelet"
+                            data-price="15800"
+                            data-image="https://naturalgemsatelier.com/cdn/shop/products/il_fullxfull.2320472879_4atn_1600x.jpg?v=1614453232">
+                            <i data-feather="shopping-cart"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card bg-charcoal rounded-sm gold-border p-6 gold-glow" data-aos="fade-up"
+                    data-aos-delay="400">
+                    <div class="relative h-64 mb-4">
+                        <img src="https://images.thenaturalsapphirecompany.com/previewandpast/js1132pt-pr3569-b/image/blue-sapphire-earring-js1132pt-pr3569-b-platinum-950-preview-request-view-01.jpg?d=750x750&s=nsc&v=20220524165342"
+                            alt="Sapphire Earrings" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="font-cinzel text-lg font-bold text-gold mb-2">Sapphire Whisper Earrings</h3>
+                    <p class="text-platinum/80 text-sm mb-4">Ceylon sapphires with diamond accents</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gold font-semibold">$9,600</span>
+                        <button class="text-gold hover:text-gold/80 add-to-cart" data-name="Sapphire Whisper Earrings"
+                            data-price="9600"
+                            data-image="https://images.thenaturalsapphirecompany.com/previewandpast/js1132pt-pr3569-b/image/blue-sapphire-earring-js1132pt-pr3569-b-platinum-950-preview-request-view-01.jpg?d=750x750&s=nsc&v=20220524165342">
+                            <i data-feather="shopping-cart"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Craftsmanship -->
+    <section class="py-20 px-4 bg-charcoal">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-right">
+                <img src="https://mjjbrilliant.com/wp-content/uploads/2023/05/pexels-andrea-piacquadio-1050312-1-scaled.jpg"
+                    alt="Craftsmanship" class="w-full rounded-sm gold-border">
+            </div>
+            <div data-aos="fade-left">
+                <h2 class="font-cinzel text-3xl md:text-4xl font-bold text-gold mb-6">Artisan Craftsmanship</h2>
+                <p class="text-platinum/90 mb-6">
+                    Each piece in our collection is meticulously handcrafted by master artisans who have dedicated their
+                    lives to the art of jewelry making.
+                    We combine traditional techniques with innovative design to create pieces that are both timeless and
+                    contemporary.
+                </p>
+                <p class="text-platinum/90 mb-8">
+                    From the initial sketch to the final polish, every step is executed with precision and passion,
+                    ensuring that each piece meets our exacting standards of excellence.
+                </p>
+                <button
+                    class="gold-border text-gold px-8 py-3 rounded-sm font-medium hover:bg-gold/10 transition-colors">
+                    Learn Our Process
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- Newsletter -->
+    <section class="relative z-10 py-20 bg-black bg-opacity-80">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-serif mb-6" data-aos="fade-up">Join Our Exclusive Circle</h2>
+            <p class="text-gray-300 mb-8 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+                Be the first to discover new collections, private viewings, and special offers reserved for our most
+                valued clients.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" data-aos="fade-up" data-aos-delay="200">
+                <input type="email" placeholder="Your email address"
+                    class="flex-grow bg-gray-900 bg-opacity-50 border border-gray-700 text-white px-4 py-3 focus:outline-none focus:border-white transition">
+                <button class="bg-white text-black px-6 py-3 hover:bg-gray-200 transition duration-300">
+                    Subscribe
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-50 bg-black border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-serif mb-4">ÉCLAT</h3>
+                    <p class="text-gray-400">
+                        Luxury jewelry crafted with passion and precision since 1892.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg mb-4">Collections</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Rings</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Necklaces</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Earrings</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Bracelets</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Craftsmanship</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Sustainability</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg mb-4">Contact</h4>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400">Paris Atelier</li>
+                        <li class="text-gray-400">+33 1 40 20 90 90</li>
+                        <li class="text-gray-400">contact@eclat.com</li>
+                        <li class="flex space-x-4 mt-4">
+                            <a href="#" class="text-gray-400 hover:text-white transition"><i
+                                    data-feather="instagram"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white transition"><i
+                                    data-feather="facebook"></i></a>
+                            <a href="#" class="text-gray-400 hover:text-white transition"><i
+                                    data-feather="twitter"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2023 Éclat. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Vanta.js globe background
+        VANTA.GLOBE({
+            el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0xffffff,
+            color2: 0x888888,
+            size: 0.8,
+            backgroundColor: 0x0
+        });
+
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+
+        // Replace Feather Icons
+        feather.replace();
+        // Cart functionality
+        let cart = [];
+        let cartCount = 0;
+
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = cartCount;
+        }
+
+        function showNotification() {
+            const notification = document.getElementById('cartNotification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function toggleCart() {
+            const cartSidebar = document.getElementById('cartSidebar');
+            cartSidebar.classList.toggle('translate-x-full');
+        }
+
+        function addToCart(name, price, image) {
+            cart.push({ name, price, image });
+            cartCount++;
+            updateCartCount();
+            updateCartItems();
+            showNotification();
+        }
+
+        function updateCartItems() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="text-gray-400 text-center py-12">Your cart is empty</div>';
+                cartTotal.textContent = '$0.00';
+                return;
+            }
+
+            let total = 0;
+            cartItems.innerHTML = '';
+
+            cart.forEach((item, index) => {
+                total += parseInt(item.price);
+                cartItems.innerHTML += `
+                    <div class="flex items-center space-x-4 py-4 border-b border-gray-800">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                        <div class="flex-grow">
+                            <h4 class="text-white font-medium">${item.name}</h4>
+                            <p class="text-gray-400">$${item.price}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-gray-400 hover:text-white">
+                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+            });
+
+            cartTotal.textContent = `$${total.toLocaleString()}`;
+            feather.replace();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            cartCount--;
+            updateCartCount();
+            updateCartItems();
+        }
+
+        // Add event listeners to all add-to-cart buttons
+        document.addEventListener('DOMContentLoaded', function () {
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const name = this.getAttribute('data-name');
+                    const price = this.getAttribute('data-price');
+                    const image = this.getAttribute('data-image');
+                    addToCart(name, price, image);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
